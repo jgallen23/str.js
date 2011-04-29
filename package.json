@@ -1,0 +1,12 @@
+{
+  "name": "str.js",
+  "description": "a simple string helper library",
+  "version": "1.0.0",
+  "homepage": "https://github.com/jgallen23/str.js",
+  "authors": ["Greg Allen, @jgallen23"],
+  "repository": {
+    "type": "git",
+    "url": "https://jgallen23@github.com/jgallen23/str.js.git"
+  },
+  "main": "./str.js"
+}

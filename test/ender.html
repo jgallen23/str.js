@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title></title>
+		<script src="ender.js"></script>
+		<script src="../str.js"></script>
+		<script src="../ender.js"></script>
+	</head>
+	<body>
+		<script>
+			var f = $.format("Hey {friend}, my name is {me}", { friend: 'Bob', me: 'Jack' }); 
+			document.write(f);
+			var person = {
+				firstName: 'Jane'
+			};
+			document.write("<br/>");
+			var t = $.template("Name: {!= person.firstName !}", { person: person }); 
+			document.write(t);
+		</script>
+	</body>
+</html>

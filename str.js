@@ -1,4 +1,4 @@
-var strUtils = (function() {
+var str = (function() {
 	var templateCache = {};
 	var formatRegEx = /\{([^}]+)\}/g;
 
@@ -26,5 +26,6 @@ var strUtils = (function() {
 		}
 	};
 })();
-if (typeof module !== undefined)
-	module.exports = strUtils;
+if (typeof module !== "undefined") {
+	module.exports = str;
+}
