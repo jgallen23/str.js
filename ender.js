@@ -1,1 +1,3 @@
-$.ender(str);
+!function($) {
+  $.ender(str);
+}(ender);

@@ -1,7 +1,7 @@
 /*!
   * Ender: open module JavaScript framework
   * copyright Dustin Diaz & Jacob Thornton 2011 (@ded @fat)
-  * https://github.com/ender-js/ender
+  * https://ender.no.de
   * License MIT
   * Build: ender build domready
   */
@@ -9,40 +9,54 @@
 
   function aug(o, o2) {
     for (var k in o2) {
-      k != 'noConflict' && (o[k] = o2[k]);
+      k != 'noConflict' && k != '_VERSION' && (o[k] = o2[k]);
     }
+    return o;
   }
 
-  function _$(s, r) {
-    this.elements = typeof s !== 'string' && !s.nodeType && typeof s.length !== 'undefined' ? s : $._select(s, r);
-    this.length = this.elements.length;
-    for (var i = 0; i < this.length; i++) {
-      this[i] = this.elements[i];
+  function boosh(s, r) {
+    var els;
+    if (ender._select && typeof s == 'string' || s.nodeName || s.length && 'item' in s || s == window) { //string || node || nodelist || window
+      els = ender._select(s, r);
+      els.selector = s;
+    } else {
+      els = isFinite(s.length) ? s : [s];
     }
+    return aug(els, boosh);
   }
 
-  function $(s, r) {
-    return new _$(s, r);
+  function ender(s, r) {
+    return boosh(s, r);
   }
 
-  aug($, {
-    ender: function (o, proto) {
-      aug(proto ? _$.prototype : $, o);
-    },
-    _select: function () {
-      return [];
+  aug(ender, {
+    _VERSION: '0.2.0',
+    ender: function (o, chain) {
+      aug(chain ? boosh : ender, o);
+    }
+  });
+
+  aug(boosh, {
+    forEach: function (fn, scope) {
+      // opt out of native forEach so we can intentionally call our own scope
+      // defaulting to the current item
+      for (var i = 0, l = this.length; i < l; ++i) {
+        i in this && fn.call(scope || this[i], this[i], i, this);
+      }
+      // return self for chaining
+      return this;
     }
   });
 
   var old = context.$;
-  $.noConflict = function () {
+  ender.noConflict = function () {
     context.$ = old;
     return this;
   };
 
-  (typeof module !== 'undefined') && module.exports ?
-    (module.exports = $) :
-    (context.$ = $);
+  (typeof module !== 'undefined') && module.exports && (module.exports = ender);
+  // use subscript notation as extern for Closure compilation
+  context['ender'] = context['$'] = ender;
 
 }(this);
 !function () { var exports = {}, module = { exports: exports }; !function (doc) {
@@ -98,4 +112,4 @@
       (module.exports = {domReady: domReady}) :
       (window.domReady = domReady);
 
-}(document); $.ender(module.exports); }();
+}(document); $.ender(module.exports); }.call($);
