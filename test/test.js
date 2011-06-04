@@ -1,4 +1,4 @@
-var utils = require("./str");
+var utils = require("./../str");
 
 var f = utils.format("Hey {friend}, my name is {me}", { friend: 'Bob', me: 'Jack' }); 
 console.log(f);

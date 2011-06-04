@@ -1,3 +1,4 @@
 !function($) {
-  $.ender(str);
+  var s = str.noConflict();
+  $.ender(s);
 }(ender);
